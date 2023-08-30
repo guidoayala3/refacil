@@ -23,11 +23,9 @@
     "jsonwebtoken": "^8.5.1",
     "lambda-multipart-parser": "^1.0.1",
     "pg": "^8.11.3",
-    "reflect-metadata": "^0.1.13",
     "serverless-domain-manager": "^6.0.2",
     "serverless-layers": "^2.5.1",
     "source-map-support": "^0.5.19",
-    "typeorm": "^0.3.17",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

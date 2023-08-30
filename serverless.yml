@@ -8,17 +8,17 @@ provider:
   architecture: arm64
   stage: release
   profile: keybe
-  timeout: 30
+  timeout: 60
   lambdaHashingVersion: 20201221
   apiGateway:
     binaryMediaTypes:
       - 'multipart/form-data'
   environment:
     URLConsulta: ${env:URLConsulta, 'https://www.datos.gov.co/resource/gt2j-8ykr.json'}
-    # S3Bucket : ${env:S3Bucket, 'bluebird-microsites-storage'}
-    # KBTABLE : ${env:KBTABLE, 'KB_LIVE_MICROSITES_QA'}
-    # V5QA : ${env:V5QA ,'http://api-connect.qakbe.com/auth/auth/info'}
-    # V5PROD : ${env:V5PRO , 'https://auth.kbe.ai/auth/info'}
+    Host: ${env:Host, 'refacil.cuazzhdbtbk0.us-east-1.rds.amazonaws.com'}
+    UserDB:  ${env:UserDB, 'postgres'}
+    DB:  ${env:DB, 'refacildb'}
+    PASS:  ${env:PASS, 'C0l0mb1a'}
     REGION : us-east-1
   tracing:
     apiGateway: true

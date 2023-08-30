@@ -1,14 +1,22 @@
-createConfig:
-  handler: src/functions/configuration/configuration.main
+GetDataCovid:
+  handler: src/functions/getData.main
   iamRoleStatementsInherit: true
   events:
     - http:
-        path: microsites/config
-        method: post
+        path: data
+        method: get
         cors: 
           headers: "*"
           origins: "*"
           allowCredentials: true
-        request:
-          schema:
-            application/json: ${file(schemes/configCreate.json)}
+getDataCasos:
+  handler: src/functions/getCasos.main
+  iamRoleStatementsInherit: true
+  events:
+    - http:
+        path: casos
+        method: get
+        cors: 
+          headers: "*"
+          origins: "*"
+          allowCredentials: true

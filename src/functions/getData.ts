@@ -1,30 +1,27 @@
 import 'source-map-support/register';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import middyfy from '@libs/lambda';
-import KBMicrositesSchema from 'schemes/kbMicrositesModel';
-import CategoryType from '@src/structures/category.type';
+import CasosType from '@src/structures/casos.type';
+import dbService from '../common/dbService';
 import { errorResponse, Response, successResponse, erroValidationDataResponse } from 'src/common/apiResponses';
+import CovidService from "../services/covidServices";
+
+async function getCasosCovid(): Promise<CasosType[]> {
+  const query = 'SELECT * FROM casos_covid';
+  const casos: CasosType[] = await dbService.query(query);
+  return casos;
+}
 
 
-const get: ValidatedEventAPIGatewayProxyEvent<CategoryType> = async (
+const get: ValidatedEventAPIGatewayProxyEvent<CasosType> = async (
   event: AWSLambda.APIGatewayEvent,
 ): Promise<Response> => {
   try {
-    if (!event.headers.Authorization) {
-      return erroValidationDataResponse({
-        message: `Se requiere TOKEN`,
-      });
-    }
-
-    if (!event.pathParameters.appUUID) {
-      return erroValidationDataResponse({
-        message: `Se requiere el APPUUID`,
-      });
-    }
-
+    
+    const data = await CovidService.checkAndInsertCovidCases();
     
     return successResponse({
-      data:"OK",
+      data,
     });
   } catch (error) {
     return errorResponse({
