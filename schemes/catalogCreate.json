@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "The Root Schema Catalog",
+    "properties": {
+        "id": {
+            "type": "string",
+            "uniqueItems": true
+        },
+        "appUUID": {
+            "type": "string"
+        },
+        "microsite": {
+            "type": "boolean"
+        },
+        "whatsapp": {
+            "type": "boolean"
+        },
+        "products": {
+            "type": "array"
+        },
+        "published": {
+            "type": "boolean"
+        },
+        "createdAt": {
+            "type": "string"
+        },
+        "updateAt": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "appUUID",
+        "microsite",
+        "whatsapp",
+        "products"
+    ]
+}

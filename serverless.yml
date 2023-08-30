@@ -1,0 +1,60 @@
+service: refacil-test
+package:
+  individually: true
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  architecture: arm64
+  stage: release
+  profile: keybe
+  timeout: 30
+  lambdaHashingVersion: 20201221
+  apiGateway:
+    binaryMediaTypes:
+      - 'multipart/form-data'
+  environment:
+    URLConsulta: ${env:URLConsulta, 'https://www.datos.gov.co/resource/gt2j-8ykr.json'}
+    # S3Bucket : ${env:S3Bucket, 'bluebird-microsites-storage'}
+    # KBTABLE : ${env:KBTABLE, 'KB_LIVE_MICROSITES_QA'}
+    # V5QA : ${env:V5QA ,'http://api-connect.qakbe.com/auth/auth/info'}
+    # V5PROD : ${env:V5PRO , 'https://auth.kbe.ai/auth/info'}
+    REGION : us-east-1
+  tracing:
+    apiGateway: true
+    lambda: true
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - xray:PutTelemetryRecords
+            - xray:PutTraceSegments
+          Resource: '*'              
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    packager: 'npm'
+    excludeFiles: src/**/*.test.[t|j]s
+  warmup:
+    enabled: true
+    events:
+      - schedule: rate(5 minutes)
+    prewarm: true
+    concurrency: 1
+  prune:
+    automatic: true
+    number: 5
+  serverless-offline:
+    httpPort: 4000
+functions: 
+  ${file(./yml/functions.yml)}
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-plugin-warmup
+  - serverless-dotenv-plugin
+  - serverless-iam-roles-per-function
+  

@@ -1,0 +1,14 @@
+createConfig:
+  handler: src/functions/configuration/configuration.main
+  iamRoleStatementsInherit: true
+  events:
+    - http:
+        path: microsites/config
+        method: post
+        cors: 
+          headers: "*"
+          origins: "*"
+          allowCredentials: true
+        request:
+          schema:
+            application/json: ${file(schemes/configCreate.json)}

@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "The Root Schema Categories",
+    "properties": {
+        "id": {
+            "type": "string",
+            "uniqueItems": true
+        },
+        "appUUID": {
+            "type": "string"
+        },
+        "category": {
+            "type": "string"
+        },
+        "published": {
+            "type": "boolean"
+        },
+        "createdAt": {
+            "type": "string"
+        },
+        "updateAt": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "appUUID",
+        "category"
+    ]
+}

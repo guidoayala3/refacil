@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "The Root Schema Config",
+    "properties": {
+        "id": {
+            "type": "string",
+            "uniqueItems": true
+        },
+        "appUUID": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "photoProfile": {
+            "type": "string"
+        },
+        "greeting": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "background": {
+            "type": "string"
+        },
+        "initialPrice": {
+            "type": "number"
+        },
+        "finalPrice": {
+            "type": "number"
+        },
+        "currency": {
+            "type": "string"
+        },
+        "address": {
+            "type": "string"
+        },
+        "webSite": {
+            "type": "string"
+        },
+        "urlKeybe": {
+            "type": "string"
+        },
+        "socialLinks": {
+            "type": "array"
+        },
+        "whatsappKeybe": {
+            "type": "string"
+        },
+        "published": {
+            "type": "boolean"
+        },
+        "createdAt": {
+            "type": "string"
+        },
+        "updateAt": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "id",
+        "appUUID",
+        "name",
+        "photoProfile",
+        "background",
+        "whatsappKeybe"
+    ]
+}

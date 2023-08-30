@@ -1,0 +1,12 @@
+trigger:
+  - main
+  - qa
+  - develop  
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: Infraestructura-DevOps/devops_util_pipeline
+
+extends:
+  template: pipeline-base-js-te.yml@templates

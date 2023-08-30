@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "resolveJsonModule": true,
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "target": "ES5",
+    "outDir": "lib",
+    "types": ["node", "jest"],
+    "resolveJsonModule": true,
+    "esModuleInterop":true
+  },
+  "include": ["src/**/*.ts", "./jest.config.ts", "./webpack.config.js", "jest-dynamodb-config.js", "schemes/**/*.ts"],
+
+  "exclude": ["node_modules/**/*", ".serverless/**/*", ".webpack/**/*", "_warmup/**/*", ".vscode/**/*"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}
