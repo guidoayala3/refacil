@@ -30,7 +30,7 @@ const get: ValidatedEventAPIGatewayProxyEvent<CasosType> = async (
         
     } catch (error) {
         return errorResponse({
-            message: `ERROR: no se pudo obtener las categorías`,
+            message: `ERROR: no se pudo obtener información`,
             data: `${error.message}`,
         });
     }

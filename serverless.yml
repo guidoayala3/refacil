@@ -7,7 +7,7 @@ provider:
   region: us-east-1
   architecture: arm64
   stage: release
-  profile: keybe
+  profile: default
   timeout: 60
   lambdaHashingVersion: 20201221
   apiGateway:

@@ -19,6 +19,12 @@ interface InsertionResult {
     errors: string[];
 }
 
+interface QueryParameters {
+    genero?: string;
+    estado?: string;
+    ciudad?: string;
+}
+
 class CovidService {
     async obtenerDatosCovid(): Promise<any> {
         try {
@@ -90,56 +96,82 @@ class CovidService {
                 caso.per_etn_
             ]);
         } catch (error) {
-          throw new Error(`Error al insertar registro ${caso.id_de_caso}: ${error.message}`);
+            throw new Error(`Error al insertar registro ${caso.id_de_caso}: ${error.message}`);
         }
-      }
+    }
 
-      async checkAndInsertCovidCases(): Promise<InsertionResult> {
+    async checkAndInsertCovidCases(): Promise<InsertionResult> {
         const result: InsertionResult = {
-          insertedCount: 0,
-          duplicateCount: 0,
-          errors: [],
+            insertedCount: 0,
+            duplicateCount: 0,
+            errors: [],
         };
-    
-        const batchSize = 100; 
-    
+
+        const batchSize = 100;
+
         const client = await dbService.getClient();
-    
+
         try {
-          await client.query('BEGIN');
-          const covidData = await this.obtenerDatosCovid();
-    
-          
-          for (let i = 0; i < covidData.length; i += batchSize) {
-            const batch = covidData.slice(i, i + batchSize);
-    
-            for (const caso of batch) {
-              const existingCaseQuery = `
+            await client.query('BEGIN');
+            const covidData = await this.obtenerDatosCovid();
+
+
+            for (let i = 0; i < covidData.length; i += batchSize) {
+                const batch = covidData.slice(i, i + batchSize);
+
+                for (const caso of batch) {
+                    const existingCaseQuery = `
                 SELECT id_de_caso FROM casos_covid
                 WHERE id_de_caso = $1
               `;
-              const existingCase = await client.query(existingCaseQuery, [caso.id_de_caso]);
-    
-              if (existingCase.rows.length === 0) {
-                await this.insertCovidCaseProcedure(client, caso);
-                result.insertedCount++;
-              } else {
-                result.duplicateCount++;
-              }
+                    const existingCase = await client.query(existingCaseQuery, [caso.id_de_caso]);
+
+                    if (existingCase.rows.length === 0) {
+                        await this.insertCovidCaseProcedure(client, caso);
+                        result.insertedCount++;
+                    } else {
+                        result.duplicateCount++;
+                    }
+                }
             }
-          }
-    
-          await client.query('COMMIT');
+
+            await client.query('COMMIT');
         } catch (error) {
-          await client.query('ROLLBACK');
-          console.error('Error:', error);
-          result.errors.push(`Error general: ${error.message}`);
+            await client.query('ROLLBACK');
+            console.error('Error:', error);
+            result.errors.push(`Error general: ${error.message}`);
         } finally {
-          await dbService.releaseClient(client);
+            await dbService.releaseClient(client);
         }
-    
+
         return result;
-      }
+    }
+
+    async getFilteredCasosIds(filter: QueryParameters): Promise<string[]> {
+        const client = await dbService.getClient();
+        let query = 'SELECT id_de_caso FROM casos_covid WHERE 1 = 1';
+
+        if (filter.genero) query += ` AND sexo = '${filter.genero}'`;
+        if (filter.estado) query += ` AND estado = '${filter.estado}'`;
+        if (filter.ciudad) query += ` AND ciudad_municipio_nom = '${filter.ciudad}'`;
+
+
+        const result = await client.query(query);
+        console.log(result);
+        await dbService.releaseClient(client);
+
+        if (result.rows && result.rows.length > 0) {
+            const idsDeCaso = result.rows.map(row => row.id_de_caso);
+            return idsDeCaso;
+        } else {
+            return [];
+        }
+    }
+
+
+
+
+
 
 
 }

@@ -7,30 +7,35 @@ import CovidService from "../services/covidServices";
 
 
 
-
+interface QueryParameters {
+    genero?: string;
+    estado?: string;
+    ciudad?: string;
+  }
 
 const get: ValidatedEventAPIGatewayProxyEvent<CasosType> = async (
     event: AWSLambda.APIGatewayEvent,
 ): Promise<Response> => {
     try {
 
-        if (event.pathParameters.genero) {
-            let genero = event.pathParameters.genero
-          }
+        const queryParameters = event.queryStringParameters || {};
 
-          if (event.pathParameters.ciudad) {
-            let genero = event.pathParameters.genero
-          }
+    const filter: QueryParameters = {};
+    if (queryParameters.genero) filter.genero = queryParameters.genero;
+    if (queryParameters.ciudad) filter.ciudad = queryParameters.ciudad;
+    if (queryParameters.estado) filter.estado = queryParameters.estado;
 
-          if (event.pathParameters.estado) {
-            let genero = event.pathParameters.genero
-          }
-          
-        
-        
+    const casosIds = await CovidService.getFilteredCasosIds(filter);
+
+    return successResponse({
+      data: {
+        idsDeCaso: casosIds,
+      },
+    });
+
     } catch (error) {
         return errorResponse({
-            message: `ERROR: no se pudo obtener las categorías`,
+            message: `ERROR: no se pudo obtener información`,
             data: `${error.message}`,
         });
     }

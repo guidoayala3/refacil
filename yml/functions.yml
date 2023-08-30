@@ -20,3 +20,14 @@ getDataCasos:
           headers: "*"
           origins: "*"
           allowCredentials: true
+searchCasos:
+  handler: src/functions/search.main
+  iamRoleStatementsInherit: true
+  events:
+    - http:
+        path: search
+        method: get
+        cors: 
+          headers: "*"
+          origins: "*"
+          allowCredentials: true          
